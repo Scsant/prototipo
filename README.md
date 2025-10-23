@@ -11,12 +11,20 @@
 
 ## Environment setup
 
-This app can connect to Supabase when environment variables are provided. Create a file named `.env.local` in the project root (you can copy from `.env.example`) and fill:
+### Para desenvolvimento (dados mockados)
+O projeto funciona perfeitamente sem configuração adicional usando dados mockados.
 
-```
-VITE_SUPABASE_URL=your_supabase_project_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+### Para conectar ao Supabase (opcional)
+1. Crie um arquivo `.env` na raiz do projeto
+2. Copie o conteúdo do arquivo `env.example`
+3. Preencha com suas credenciais do Supabase:
+
+```env
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
 ```
 
-Then restart the dev server if it is running.
+4. Reinicie o servidor de desenvolvimento: `npm run dev`
+
+**Nota:** O projeto está configurado para funcionar com dados mockados por padrão, então você pode começar a usar imediatamente sem configuração adicional.
   
