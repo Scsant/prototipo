@@ -315,7 +315,7 @@ export function InteractiveMapPage() {
     }).addTo(map);
 
     // Draw buffers (50km circles) PRIMEIRO (por baixo de tudo)
-    if (showBuffers && showFarms) {
+    if (showBuffers) {
       filteredFarms.forEach((farm) => {
         const getPolygonColor = (state: OperationState) => {
           switch (state) {
@@ -333,9 +333,9 @@ export function InteractiveMapPage() {
           radius: 50000, // 50km em metros
           color: color,
           fillColor: color,
-          fillOpacity: 0.05,
-          weight: 1,
-          dashArray: '5, 10',
+          fillOpacity: 0.08,
+          weight: 2,
+          dashArray: '8, 12',
         }).addTo(map);
       });
     }
@@ -879,6 +879,15 @@ export function InteractiveMapPage() {
                 >
                   <Truck className="size-4" />
                   Carregamento
+                </Button>
+                <Button 
+                  variant={showBuffers ? 'default' : 'outline'} 
+                  size="sm"
+                  onClick={() => setShowBuffers(!showBuffers)}
+                  className="gap-2"
+                >
+                  <Circle className="size-4" />
+                  Buffers
                 </Button>
                 <Button
                   variant="outline"
