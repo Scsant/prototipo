@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
 import { Separator } from '../ui/separator';
 import { Factory, Map, Route as RouteIcon, MapPin, ArrowLeft } from 'lucide-react';
+import { RoutesMap } from '../RoutesMap';
 
 type FarmLite = {
   id: string;
@@ -83,10 +84,6 @@ export function RoutesPage() {
 
   const routeKm = selectedFarm ? Math.round(haversineKm(FACTORY_COORDS, [selectedFarm.latitude, selectedFarm.longitude])) : null;
   const routeTimeMin = routeKm !== null ? Math.round(routeKm * 1.5) : null;
-  const baseUrl = (import.meta as any).env?.BASE_URL || '/';
-  const iframeSrc = selectedFarm
-    ? `${baseUrl}routes-map.html?lat=${encodeURIComponent(String(selectedFarm.latitude))}&lng=${encodeURIComponent(String(selectedFarm.longitude))}&name=${encodeURIComponent(selectedFarm.nome)}`
-    : `${baseUrl}routes-map.html`;
 
   return (
     <div className="p-6 max-w-[1800px] mx-auto space-y-6">
@@ -177,12 +174,10 @@ export function RoutesPage() {
             </CardHeader>
             <CardContent className="p-0">
               <div className="relative">
-                <iframe
-                  key={iframeSrc}
-                  src={iframeSrc}
-                  title="Mapa de Rotas"
-                  className="w-full"
-                  style={{ height: 'calc(100vh - 220px)', border: '0' }}
+                <RoutesMap
+                  lat={selectedFarm?.latitude}
+                  lng={selectedFarm?.longitude}
+                  name={selectedFarm?.nome}
                 />
               </div>
             </CardContent>
@@ -253,13 +248,13 @@ export function RoutesPage() {
               </button>
             </div>
           </div>
-          <iframe
-            key={`expanded-${iframeSrc}`}
-            src={iframeSrc}
-            title="Mapa de Rotas - Expandido"
-            className="w-full flex-1"
-            style={{ border: '0' }}
-          />
+          <div className="w-full flex-1">
+            <RoutesMap
+              lat={selectedFarm?.latitude}
+              lng={selectedFarm?.longitude}
+              name={selectedFarm?.nome}
+            />
+          </div>
         </div>
       )}
 
