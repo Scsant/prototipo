@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
@@ -314,31 +314,7 @@ export function InteractiveMapPage() {
       dashArray: '5, 8',
     }).addTo(map);
 
-    // Draw buffers (50km circles) PRIMEIRO (por baixo de tudo)
-    if (showBuffers) {
-      filteredFarms.forEach((farm) => {
-        const getPolygonColor = (state: OperationState) => {
-          switch (state) {
-            case 'idle': return '#6b7280';
-            case 'cto_baldeio': return '#f59e0b';
-            case 'colheita': return '#22c55e';
-            case 'carregamento': return '#3b82f6';
-          }
-        };
-
-        const color = getPolygonColor(farm.operation_state);
-        
-        // Buffer de 50km
-        leaflet.circle([farm.latitude, farm.longitude], {
-          radius: 50000, // 50km em metros
-          color: color,
-          fillColor: color,
-          fillOpacity: 0.08,
-          weight: 2,
-          dashArray: '8, 12',
-        }).addTo(map);
-      });
-    }
+    // Buffers são gerenciados em useEffect separado
 
     // Draw farm polygons
     if (showFarms) {
@@ -502,7 +478,47 @@ export function InteractiveMapPage() {
         });
       });
     }
-  }, [map, leaflet, showFarms, showModulosColheita, showModulosCarregamento, showBuffers, filterEstado]);
+  }, [map, leaflet, showFarms, showModulosColheita, showModulosCarregamento, filterEstado, farmsWithPolygons, modulosColheita, modulosCarregamento]);
+
+  // useEffect separado para buffers - não afetado pela seleção de fazendas
+  useEffect(() => {
+    if (!map || !leaflet || !showBuffers) return;
+
+    // Remover apenas buffers existentes
+    map.eachLayer((layer: any) => {
+      if (layer instanceof leaflet.Circle && layer.options.radius === 50000) {
+        map.removeLayer(layer);
+      }
+    });
+
+    const filteredFarms = filterEstado 
+      ? farmsWithPolygons.filter(f => f.estado === filterEstado)
+      : farmsWithPolygons;
+
+    // Desenhar buffers
+    filteredFarms.forEach((farm) => {
+      const getPolygonColor = (state: OperationState) => {
+        switch (state) {
+          case 'idle': return '#6b7280';
+          case 'cto_baldeio': return '#f59e0b';
+          case 'colheita': return '#22c55e';
+          case 'carregamento': return '#3b82f6';
+        }
+      };
+
+      const color = getPolygonColor(farm.operation_state);
+      
+      // Buffer de 50km
+      leaflet.circle([farm.latitude, farm.longitude], {
+        radius: 50000, // 50km em metros
+        color: color,
+        fillColor: color,
+        fillOpacity: 0.08,
+        weight: 2,
+        dashArray: '8, 12',
+      }).addTo(map);
+    });
+  }, [map, leaflet, showBuffers, filterEstado, farmsWithPolygons]);
 
   const estados = ['SP', 'MS', 'GO', 'PR', 'MG'];
   
