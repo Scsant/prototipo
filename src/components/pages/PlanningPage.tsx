@@ -51,7 +51,7 @@ export function PlanningPage() {
       setMetaHora(parametros.meta_toneladas_hora || 1458);
     } catch (error) {
       console.error('Erro ao carregar dados:', error);
-      toast.error('Erro ao carregar parâmetros');
+      toast.error('Erro ao conectar com o banco de dados');
     } finally {
       setLoading(false);
     }

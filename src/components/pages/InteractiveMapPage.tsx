@@ -155,6 +155,89 @@ export function InteractiveMapPage() {
         setModulosCarregamento(carregamento);
       } catch (error) {
         console.error('Erro ao carregar dados do mapa:', error);
+        
+        // Fallback para dados mockados quando Supabase não está disponível
+        const mockFarms: FarmWithGeo[] = [
+          {
+            id: 'SP-01',
+            nome: 'Fazenda Operacional 01 - SP',
+            estado: 'SP',
+            latitude: -22.5,
+            longitude: -48.2,
+            produtividade: 'alta',
+            distancia_km: 45,
+            estoque_t: 2500,
+            poligono: generatePolygon(-22.5, -48.2, 5),
+            operation_state: 'colheita',
+            colheita_progresso: {
+              colhido_t: 1800,
+              meta_t: 2500,
+              modulo_id: 'COL-01'
+            }
+          },
+          {
+            id: 'SP-02',
+            nome: 'Fazenda Operacional 02 - SP',
+            estado: 'SP',
+            latitude: -22.3,
+            longitude: -48.5,
+            produtividade: 'media',
+            distancia_km: 67,
+            estoque_t: 3200,
+            poligono: generatePolygon(-22.3, -48.5, 5),
+            operation_state: 'carregamento',
+            carregamento_progresso: {
+              carregado_t: 1600,
+              meta_t: 3200,
+              modulo_id: 'CAR-01'
+            }
+          },
+          {
+            id: 'SP-03',
+            nome: 'Fazenda Operacional 03 - SP',
+            estado: 'SP',
+            latitude: -22.7,
+            longitude: -48.8,
+            produtividade: 'baixa',
+            distancia_km: 89,
+            estoque_t: 1800,
+            poligono: generatePolygon(-22.7, -48.8, 5),
+            operation_state: 'cto_baldeio',
+            tpc_dias: 45
+          }
+        ];
+        
+        const mockColheita: ModuleWithGeo[] = [
+          {
+            id: 'COL-01',
+            nome: 'Módulo Colheita 01',
+            status: 'ativo',
+            tipo: 'móvel',
+            tipo_operacao: 'colheita',
+            estado: 'SP',
+            latitude: -22.5,
+            longitude: -48.2,
+            trocas_dia_max: 2
+          }
+        ];
+        
+        const mockCarregamento: ModuleWithGeo[] = [
+          {
+            id: 'CAR-01',
+            nome: 'Módulo Carregamento 01',
+            status: 'ativo',
+            tipo: 'fixo',
+            tipo_operacao: 'carregamento',
+            estado: 'SP',
+            latitude: -22.3,
+            longitude: -48.5,
+            trocas_dia_max: 3
+          }
+        ];
+        
+        setFarmsWithPolygons(mockFarms);
+        setModulosColheita(mockColheita);
+        setModulosCarregamento(mockCarregamento);
       } finally {
         setLoading(false);
       }

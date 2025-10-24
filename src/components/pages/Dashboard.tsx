@@ -7,6 +7,7 @@ import { Truck, Package, TrendingUp, Clock, MapPin, AlertTriangle, Repeat, Targe
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { dashboardQueries, ordersQueries } from '../../lib/queries';
 import { getStatusColorDark } from '../../lib/mock-data';
+import { toast } from 'sonner@2.0.3';
 
 export function Dashboard() {
   const [kpis, setKpis] = useState<any>(null);
@@ -31,6 +32,7 @@ export function Dashboard() {
         setOrdensRecentes(ordensData.slice(0, 5));
       } catch (error) {
         console.error('Erro ao carregar dashboard:', error);
+        toast.error('Erro ao conectar com o banco de dados');
       } finally {
         setLoading(false);
       }
