@@ -32,7 +32,54 @@ export function Dashboard() {
         setOrdensRecentes(ordensData.slice(0, 5));
       } catch (error) {
         console.error('Erro ao carregar dashboard:', error);
-        toast.error('Erro ao conectar com o banco de dados');
+        
+        // Fallback para dados mockados quando Supabase não está disponível
+        setKpis({
+          demanda_atendida: 28500,
+          trocas_modulo: 12,
+          km_total: 1840,
+          tempo_medio_ciclo: 4.2,
+          eficiencia: 87.5,
+          caminhoes_ativos: 45,
+          fazendas_operacionais: 8,
+          produtividade_media: 92.3
+        });
+        
+        setAlertas([
+          {
+            id: '1',
+            tipo: 'warning',
+            titulo: 'Fazenda SP-15 com baixa produtividade',
+            descricao: 'Produtividade 15% abaixo da média',
+            timestamp: new Date().toISOString()
+          },
+          {
+            id: '2',
+            tipo: 'info',
+            titulo: 'Módulo COL-03 movido para SP-22',
+            descricao: 'Transferência concluída com sucesso',
+            timestamp: new Date(Date.now() - 300000).toISOString()
+          }
+        ]);
+        
+        setOrdensRecentes([
+          {
+            id: 'ORD-001',
+            fazenda: 'SP-15',
+            volume: 850,
+            status: 'em_andamento',
+            prioridade: 'alta'
+          },
+          {
+            id: 'ORD-002',
+            fazenda: 'SP-22',
+            volume: 1200,
+            status: 'planejada',
+            prioridade: 'media'
+          }
+        ]);
+        
+        toast.info('Usando dados de demonstração (banco não disponível)');
       } finally {
         setLoading(false);
       }
