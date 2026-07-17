@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<manifest>
+  <control namespace="PowerAppsLab" constructor="ReactStarter" version="0.0.1" display-name-key="ReactStarter" description-key="ReactStarter description" control-type="virtual" api-version="1.3.18">
+    <external-service-usage enabled="false"/>
+    <property name="sampleProperty" display-name-key="Property_Display_Key" description-key="Property_Desc_Key" of-type="SingleLine.Text" usage="bound" required="true"/>
+    <resources>
+      <code path="bundle.js" order="1"/>
+      <css path="css/ReactStarter.css" order="1"/>
+      <platform-library name="React" version="16.14.0"/>
+      <platform-library name="Fluent" version="9.46.2"/>
+    </resources>
+    <feature-usage/>
+    <built-by name="pac" version="1.51.1"/>
+  </control>
+</manifest>
